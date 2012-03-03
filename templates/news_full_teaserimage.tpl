@@ -1,0 +1,70 @@
+
+<div class="layout_full teaserimage block<?php echo $this->class; ?>">
+<?php if ($this->hasMetaFields): ?>
+<p class="info"><?php echo $this->date; ?> <?php echo $this->author; ?> <?php echo $this->commentCount; ?></p>
+<?php endif; ?>
+
+<?php if($this->teaser): ?>
+	<h2><?php echo $this->text ? $this->linkHeadline : $this->newsHeadline; ?></h2>
+	<?php /*** use regular news image if no teaser image selected ***/ ?>
+	<?php if ($this->addImage && !$this->teaser_addImage): ?>
+		<div class="image_container<?php echo $this->floatClass; ?> teaser_image"<?php if ($this->margin || $this->float): ?> style="<?php echo trim($this->margin . $this->float); ?>"<?php endif; ?>>
+		<?php if ($this->href): ?>
+		<a href="<?php echo $this->href; ?>"<?php echo $this->attributes; ?> title="<?php echo $this->alt; ?>">
+		<?php endif; ?>
+		<img src="<?php echo $this->src; ?>"<?php echo $this->imgSize; ?> alt="<?php echo $this->alt; ?>" />
+		<?php if ($this->href): ?>
+		</a>
+		<?php endif; ?>
+		<?php if ($this->caption): ?>
+		<div class="caption"><?php echo $this->caption; ?></div>
+		<?php endif; ?>
+		</div>
+	<?php else: ?>
+		<?php if (!$this->teaser_addBefore): ?>
+		<p class="teaser"><?php echo $this->teaser; ?></p>
+		<?php endif; ?>
+		<?php if ($this->teaser_addImage): ?>
+		<div class="image_container<?php echo $this->teaser_floatClass; ?>"<?php if ($this->teaser_margin || $this->teaser_float): ?> style="<?php echo trim($this->teaser_margin . $this->teaser_float); ?>"<?php endif; ?>>
+		<?php if ($this->teaser_href): ?>
+		<a href="<?php echo $this->teaser_href; ?>"<?php echo $this->teaser_attributes; ?> title="<?php echo $this->teaser_alt; ?>">
+		<?php endif; ?>
+		<img src="<?php echo $this->teaser_src; ?>"<?php echo $this->teaser_imgSize; ?> alt="<?php echo $this->teaser_alt; ?>" />
+		</a>
+		<?php if ($this->teaser_caption): ?>
+		<div class="caption"><?php echo $this->teaser_caption; ?></div>
+		<?php endif; ?>
+		</div>
+		<?php endif; ?>
+		<?php if ($this->teaser_addBefore): ?>
+		<p class="teaser"><?php echo $this->teaser; ?></p>
+		<?php endif; ?>
+		<p class="more"><?php echo $this->more; ?></p>
+	<?php endif; ?>
+
+<?php else: ?>
+
+	<?php /*** handle like news_full ***/ ?>
+	<h2><?php echo $this->newsHeadline; ?></h2>
+	<?php if (!$this->addBefore): ?>
+	<?php echo $this->text; ?>
+	<?php endif; ?>
+	<?php if ($this->addImage): ?>
+	<div class="image_container<?php echo $this->floatClass; ?>"<?php if ($this->margin || $this->float): ?> style="<?php echo trim($this->margin . $this->float); ?>"<?php endif; ?>>
+	<?php if ($this->href): ?>
+	<a href="<?php echo $this->href; ?>"<?php echo $this->attributes; ?> title="<?php echo $this->alt; ?>">
+	<?php endif; ?>
+	<img src="<?php echo $this->src; ?>"<?php echo $this->imgSize; ?> alt="<?php echo $this->alt; ?>" />
+	<?php if ($this->href): ?>
+	</a>
+	<?php endif; ?>
+	<?php if ($this->caption): ?>
+	<div class="caption"><?php echo $this->caption; ?></div>
+	<?php endif; ?>
+	</div>
+	<?php endif; ?>
+	<?php if ($this->addBefore): ?>
+	<?php echo $this->text; ?>
+	<?php endif; ?>
+<?php endif; ?>
+</div>
