@@ -59,6 +59,12 @@ class ArticleImage extends Frontend
  		// add image to template if necessary
  		if($arrImage['addImage'])
  		{
+ 			// @added by deerwood
+ 			if ($arrImage['linkedimage'])
+			{
+				// force link to the article
+				$arrImage['imageUrl'] = $objTemplate->articleHref;
+			}
  			$this->addImageToTemplate($objTemplate, $arrImage);
  		}
  	}
