@@ -49,7 +49,7 @@ $GLOBALS['TL_DCA']['tl_article']['palettes']['default'] = str_replace(
  */
 array_insert($GLOBALS['TL_DCA']['tl_article']['subpalettes'], 1, array
 (
-	'addImage'		=> 'singleSRC,alt,size,imagemargin,imageUrl,fullsize,caption,floating', 
+	'addImage'		=> 'singleSRC,alt,size,imagemargin,imageUrl,fullsize,caption,floating,linkedimage', 
 ));
 
 /**
