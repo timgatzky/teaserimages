@@ -24,49 +24,54 @@
  * Software Foundation website at <http://www.gnu.org/licenses/>.
  *
  * PHP version 5
- * @copyright  Tim Gatzky 2011
+ * @copyright  Tim Gatzky 2012
  * @author     Tim Gatzky <info@tim-gatzky.de>
- * @package    Contao
+ * @package    teaserimages
  * @license    LGPL 
  * @filesource
- * 
- * Thanks to:
- * + @copyright Wangaz GbR 2010
- * + @author Torben Stoffer <stoffer@wangaz.com>
- * + @package xArticleImage
  */
 
 class ArticleImage extends Frontend
 {
 	/**
-	 * Add image to template.
-	 *
-	 * @param $objTemplate template to add the image to
-	 * @param isCE if constructor is called from an content element template
+	 * add an image to the article teaser
 	 */
- 	public function __construct($objTemplate, $isCE = false) {
- 		// save article href
- 		$objTemplate->articleHref = $objTemplate->href;
- 	
- 		// connect to database and get image settings
- 		$this->import('Database');
- 		
- 		$objImage = $this->Database->prepare("SELECT addImage, singleSRC, alt, size, imagemargin, fullsize, caption, floating FROM tl_article WHERE id=?")
- 						->limit(1)
- 						->execute($isCE ? $objTemplate->article : $objTemplate->id);
- 		
- 		$arrImage = $objImage->fetchAssoc();
- 		// add image to template if necessary
- 		if($arrImage['addImage'])
+	public function __construct($objTemplate, $isCE = false) 
+ 	{
+ 		if($objTemplate->addImage)
  		{
- 			// @added by deerwood
- 			if ($arrImage['linkedimage'])
-			{
-				// force link to the article
-				$arrImage['imageUrl'] = $objTemplate->articleHref;
-			}
- 			$this->addImageToTemplate($objTemplate, $arrImage);
+ 			$arrImage = array
+ 			(
+ 				'addImage' => $objTemplate->addImage,
+ 				'singleSRC' => $objTemplate->singleSRC,
+ 				'alt' => $objTemplate->alt,
+ 				'size' => $objTemplate->size,
+ 				'imagemargin' => $objTemplate->imagemargin,
+ 				'fullsize' => $objTemplate->fullsize,
+ 				'caption' => $objTemplate->caption,
+ 				'linkedimage' => $objTemplate->linkedimage,
+ 				'imageUrl' => $objTemplate->imageUrl,
+ 			);
  		}
+ 		
+ 		if($objTemplate->linkedimage || $objTemplate->imageUrl)
+ 		{
+ 			$objTemplate->imageHref = $objTemplate->href;
+ 			$arrImage['imageUrl'] = $objTemplate->href;
+ 		}
+ 		
+ 		if($objTemplate->fullsize && !$objTemplate->linkedimage && !$objTemplate->imageUrl)
+ 		{
+ 			$objTemplate->imageHref = $arrImage['singleSRC'];
+ 		}
+ 		
+ 		// always link on image if set
+ 		if($objTemplate->linkedimage)
+ 		{
+ 			$objTemplate->imageHref = $objTemplate->href;
+ 		}
+ 		
+ 		$this->addImageToTemplate($objTemplate, $arrImage);
  	}
 }
 
