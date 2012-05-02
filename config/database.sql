@@ -56,7 +56,7 @@ CREATE TABLE `tl_article` (
   `fullsize` char(1) NOT NULL default '',
   `caption` varchar(255) NOT NULL default '',
   `floating` varchar(32) NOT NULL default '',
-  `linkedimage` char(1) NOT NULL default '',
+  `linkedimage` char(1) NOT NULL default '1',
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 

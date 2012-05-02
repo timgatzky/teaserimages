@@ -38,7 +38,25 @@ class ArticleImage extends Frontend
 	 */
 	public function __construct($objTemplate, $isCE = false) 
  	{
- 		if($objTemplate->addImage)
+ 		$articleHref = $objTemplate->href;
+ 	
+ 		// handle include articles
+ 		if($isCE)
+ 		{
+ 			$this->import('Database');
+ 			$objArticle = $this->Database->prepare("SELECT addImage,singleSRC,alt,size,imagemargin,fullsize,caption,floating,linkedimage,imageUrl FROM tl_article WHERE id=?")
+ 							->limit(1)
+ 							->execute($objTemplate->article);
+ 			
+ 			if(!$objArticle->addImage)
+ 			{
+ 				return '';
+ 			}
+ 			$arrImage = $objArticle->row();
+ 		}
+ 		
+ 		// regular article
+ 		if(!$isCE && $objTemplate->addImage) 		
  		{
  			$arrImage = array
  			(
@@ -47,31 +65,37 @@ class ArticleImage extends Frontend
  				'alt' => $objTemplate->alt,
  				'size' => $objTemplate->size,
  				'imagemargin' => $objTemplate->imagemargin,
+ 				'floating' => $objTemplate->floating,
  				'fullsize' => $objTemplate->fullsize,
  				'caption' => $objTemplate->caption,
  				'linkedimage' => $objTemplate->linkedimage,
  				'imageUrl' => $objTemplate->imageUrl,
  			);
- 		}
+	 	}
+	 	
+	 	// add image to template
+ 		$this->addImageToTemplate($objTemplate, $arrImage);
  		
- 		if($objTemplate->linkedimage || $objTemplate->imageUrl)
- 		{
- 			$objTemplate->imageHref = $objTemplate->href;
- 			$arrImage['imageUrl'] = $objTemplate->href;
- 		}
- 		
- 		if($objTemplate->fullsize && !$objTemplate->linkedimage && !$objTemplate->imageUrl)
+ 		$objTemplate->imageHref = $arrImage['imageUrl'];
+ 		 		
+ 		// prepare for lightbox
+ 		if($arrImage['fullsize'] && !$arrImage['linkedimage'] && !$arrImage['imageUrl'])
  		{
  			$objTemplate->imageHref = $arrImage['singleSRC'];
  		}
  		
- 		// always link on image if set
- 		if($objTemplate->linkedimage)
+ 		// link on article
+ 		if($arrImage['linkedimage'])
  		{
- 			$objTemplate->imageHref = $objTemplate->href;
+ 			$objTemplate->imageHref = $articleHref;
+ 			
+ 			// open in new window
+ 			if($arrImage['fullsize'])
+ 			{
+ 				$objTemplate->attributes = 'target="_blank"';
+ 			}
  		}
- 		
- 		$this->addImageToTemplate($objTemplate, $arrImage);
+		
  	}
 }
 
