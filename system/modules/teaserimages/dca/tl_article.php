@@ -19,11 +19,6 @@
 $this->loadLanguageFile('tl_content');
 
 /**
- * Modify dca
- */
-$GLOBALS['TL_DCA']['tl_article']['config']['onload_callback'][] = array('tl_article_teaserimages', 'modifyDca');
-
-/**
  * Selectors
  */
 $GLOBALS['TL_DCA']['tl_article']['palettes']['__selector__'][] = 'addImage';
@@ -153,30 +148,14 @@ if (version_compare(VERSION, '3.2', '<'))
 class tl_article_teaserimages extends \Backend
 {
 	/**
-	 * Modify dca
-	 * @param object
-	 * @return void
-	 */
-	public function modifyDca(DataContainer $dc)
-	{
-		if(!$GLOBALS['TL_CONFIG']['teaser_articles_tinymce'])
-		{
-			unset($GLOBALS['TL_DCA']['tl_article']['fields']['teaser']['eval']['rte']);
-		}
-	}	
-		
-	/**
 	 * Return the link picker wizard
 	 * @param \DataContainer
 	 * @return string
 	 */
 	public function pagePicker(DataContainer $dc)
 	{
-		return ' <a href="contao/page.php?do='.Input::get('do').'&amp;table='.$dc->table.'&amp;field='.$dc->field.'&amp;value='.str_replace(array('{{link_url::', '}}'), '', $dc->value).'" title="'.specialchars($GLOBALS['TL_LANG']['MSC']['pagepicker']).'" onclick="Backend.getScrollOffset();Backend.openModalSelector({\'width\':765,\'title\':\''.specialchars(str_replace("'", "\\'", $GLOBALS['TL_LANG']['MOD']['page'][0])).'\',\'url\':this.href,\'id\':\''.$dc->field.'\',\'tag\':\'ctrl_'.$dc->field . ((Input::get('act') == 'editAll') ? '_' . $dc->id : '').'\',\'self\':this});return false">' . $this->generateImage('pickpage.gif', $GLOBALS['TL_LANG']['MSC']['pagepicker'], 'style="vertical-align:top;cursor:pointer"') . '</a>';
-	}
-
-		
-	
+		return ' <a href="contao/page.php?do='.\Input::get('do').'&amp;table='.$dc->table.'&amp;field='.$dc->field.'&amp;value='.str_replace(array('{{link_url::', '}}'), '', $dc->value).'" title="'.specialchars($GLOBALS['TL_LANG']['MSC']['pagepicker']).'" onclick="Backend.getScrollOffset();Backend.openModalSelector({\'width\':765,\'title\':\''.specialchars(str_replace("'", "\\'", $GLOBALS['TL_LANG']['MOD']['page'][0])).'\',\'url\':this.href,\'id\':\''.$dc->field.'\',\'tag\':\'ctrl_'.$dc->field . ((\Input::get('act') == 'editAll') ? '_' . $dc->id : '').'\',\'self\':this});return false">' . $this->generateImage('pickpage.gif', $GLOBALS['TL_LANG']['MSC']['pagepicker'], 'style="vertical-align:top;cursor:pointer"') . '</a>';
+	}	
 }
 
 

@@ -20,11 +20,6 @@ $this->loadLanguageFile('tl_content');
 $this->loadLanguageFile('tl_news');
 
 /**
- * Modify dca
- */
-$GLOBALS['TL_DCA']['tl_calendar_events']['config']['onload_callback'][] = array('tl_calendar_events_teaserimage', 'modifyDca');
-
-/**
  * Selectors
  */
 $GLOBALS['TL_DCA']['tl_calendar_events']['palettes']['__selector__'][] = 'teaser_addImage';
@@ -149,21 +144,3 @@ if (version_compare(VERSION, '3.2', '<'))
 {
 	$GLOBALS['TL_DCA']['tl_calendar_events']['fields']['singleSRC']['sql'] = "varchar(255) NOT NULL default ''";
 }
-
-
-class tl_calendar_events_teaserimage extends Backend
-{
-	/**
-	 * Modify dca
-	 * @param object
-	 * @return void
-	 */
-	public function modifyDca(DataContainer $dc)
-	{
-		if(!$GLOBALS['TL_CONFIG']['teaser_events_tinymce'])
-		{
-			unset($GLOBALS['TL_DCA']['tl_calendar_events']['fields']['teaser']['eval']['rte']);
-		}
-	}
-}
-

@@ -17,11 +17,6 @@
 $this->loadLanguageFile('tl_content');
 
 /**
- * Modify dca
- */
-$GLOBALS['TL_DCA']['tl_news']['config']['onload_callback'][] = array('tl_news_teaserimages', 'modifyDca');
-
-/**
  * Selectors
  */
 $GLOBALS['TL_DCA']['tl_news']['palettes']['__selector__'][] = 'teaser_addImage';
@@ -144,21 +139,5 @@ array_insert($GLOBALS['TL_DCA']['tl_news']['fields'], 1, array
 if (version_compare(VERSION, '3.2', '<'))
 {
 	$GLOBALS['TL_DCA']['tl_news']['fields']['singleSRC']['sql'] = "varchar(255) NOT NULL default ''";
-}
-
-class tl_news_teaserimages extends Backend
-{
-	/**
-	 * Modify dca
-	 * @param object
-	 * @return void
-	 */
-	public function modifyDca(DataContainer $dc)
-	{
-		if(!$GLOBALS['TL_CONFIG']['teaser_news_tinymce'])
-		{
-			unset($GLOBALS['TL_DCA']['tl_news']['fields']['teaser']['eval']['rte']);
-		}
-	}
 }
 
